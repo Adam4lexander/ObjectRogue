@@ -122,7 +122,7 @@ method group (Console){
     }
 
     shared public method columns { (receiver runCommand: "tput cols") asInteger; }
-    shared public method rows { (receiver runCommand: "tput lines") asInteger; }
+    shared public method rows { (receiver runCommand: "tput lines") asInteger - 1; }
 
     shared protected method runCommand as runCommand: 
     {|(cmd : String -> String)|
