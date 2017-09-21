@@ -45,8 +45,8 @@ method group (FrameBuffer){
         1 to: (depths size) do: 
         {|(i)|
             chars[i] = ' ';
-            backColours[i] = 40;
-            frontColours[i] = 37;
+            backColours[i] = 0;
+            frontColours[i] = 7;
             depths[i] = 99999;
         } 
     }
