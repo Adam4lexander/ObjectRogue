@@ -26,9 +26,11 @@ personal public method main
     |exiting| = False;
     {exiting} whileFalse: {
         |c| = Host in readChar;
-        (c asInteger == KEY_ESC) ifTrue: {exiting = True};
-        sim tick(c);
-        sim render;
+        (c asInteger == KEY_ESC) ifTrue: {exiting = True}
+        ifFalse: {
+            sim tick(c);
+            sim render;
+        }
     };
 
     Console showCursor;

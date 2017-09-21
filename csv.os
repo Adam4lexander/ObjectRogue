@@ -9,23 +9,23 @@ directory
 module csv
 
 method group (csv){
-    personal public method fromFile:
-    {|(filename) line|
+    personal public method fromFile:splitOn:
+    {|(filename, splitChar) line|
         |data| = Array new;
         |file| = File openAsTextInput: filename;
         { (line = file readLine) isNotNil } whileTrue: {
             (line length > 0) ifTrue: { 
-                data = data append(receiver splitProperly(line))
+                data = data append(receiver splitProperly(line, splitChar))
             };
         };
         return data;
     }
     
     personal private method splitProperly
-    {|(str) temp, tempS|
+    {|(str, splitOn) temp, tempS|
         tempS = str;
         |arr| = Array new;
-        {temp = tempS split: ","; temp[2] size > 0} whileTrue: {
+        {temp = tempS split: splitOn; temp[2] size > 0} whileTrue: {
             arr = arr append: temp[1];
             tempS = temp[2];
         };
