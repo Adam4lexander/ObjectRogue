@@ -1,1 +1,1 @@
-omc Graphics.os ObjectRogue.os
+omc csv.os AnsiMap.os Graphics.os ObjectRogue.os

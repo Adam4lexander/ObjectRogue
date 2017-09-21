@@ -37,6 +37,7 @@ personal public method main
 method group (Simulation)
 {
     protected attribute fb;
+    protected attribute map;
     protected attribute x;
     protected attribute y;
 
@@ -47,6 +48,7 @@ method group (Simulation)
         sim::fb = FrameBuffer x: Console columns y: Console rows;
         sim::x = 0;
         sim::y = 0;
+        sim::map = AnsiMap csv: "Test.csv";
         return sim;
     }
 
@@ -65,6 +67,7 @@ method group (Simulation)
         |(i)|
             fb draw(10 + i - x, 10 - y, '@', 32, 43, 1);
         };
+        fb draw(0 - x, 0 - y, receiver::map, 0);
         fb toConsole;
     }
 }

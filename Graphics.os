@@ -63,6 +63,21 @@ method group (FrameBuffer){
         depths[ind] = depth;
     }
 
+    public method draw
+    {|(x, y, map : AnsiMap, depth)|
+        |area| = map::width * map::height;
+        0 to: (area - 1) do:
+        {|(i)|
+            |mx| = i % (map::width);
+            |my| = i / (map::width);
+            |fbx| = x + mx;
+            |fby| = y + my;
+            (fbx < 0 || fbx >= receiver::width || fby < 0 || fby >= receiver::height) ifFalse: {
+                receiver draw(fbx, fby, map character(mx, my), map backgroundColour(mx, my), map foregroundColour(mx, my), depth);
+            }
+        }
+    }
+
     public method toConsole
     {
         Console goto(0, 0);
@@ -101,6 +116,14 @@ method group (Console){
             Host out print(code asString);
             (i < codes size) ifTrue: { Host out print(";") };
         };
+        Host out print("m");
+        Host out flush;
+    }
+
+    shared public method backgroundColour
+    {|(r, g, b)|
+        Host out print(Receiver ESC + "[38;2;");
+        Host out print(r + ";" + g + ";" + b);
         Host out print("m");
         Host out flush;
     }
