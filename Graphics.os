@@ -86,7 +86,7 @@ method group (FrameBuffer){
             |bc| = backColours[i];
             |fc| = frontColours[i];
             (fc < 10) ifTrue: { Console graphics(bc + 40, fc + 30) }
-            ifFalse: { Console graphics(1, bc + 40, fc - 10 + 90) };
+            ifFalse: { Console graphics(fc - 10 + 90, bc + 40) };
             Host out print(chars[i]);
             (i % width == 0) ifTrue: {Host out print("\n")};
         };

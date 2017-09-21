@@ -35,6 +35,11 @@ method group (AnsiMap){
         return map;
     }
 
+    personal public method toUnicode:
+    {|(cp437code)|
+        return receiver parseHex(receiver::charMap[cp437code+1][2]);
+    }
+
     protected method csv:
     {|(filename)|
         data = CSV fromFile: filename splitOn: ',';
@@ -77,7 +82,7 @@ method group (AnsiMap){
         (y * receiver::width) + x + 2; // Plus 2 for first line having headers
     }
 
-    private method parseHex
+    shared private method parseHex
     {|(hexString)|
         |val| = 0;
         (hexString subString: 3 to: hexString size) asCharacters do:
