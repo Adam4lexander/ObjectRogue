@@ -11,6 +11,7 @@ module AnsiMap
 method group (AnsiMap){
     protected attribute data;
     personal protected attribute charMap;
+    personal protected attribute colourMap;
     protected attribute for write width;
     public attribute for read width;
     protected attribute for write height;
@@ -19,6 +20,11 @@ method group (AnsiMap){
     personal restricted method Initialise
     {
         charMap = CSV fromFile: "charConversion.csv" splitOn: 0x09;
+        colourMap = Dictionary new;
+        (CSV fromFile: "colourmap.csv" splitOn: ',') do:
+        {|(line)|
+            colourMap addKey: line[1] object: line[2] asInteger;
+        }
     }
 
     personal public method csv:
@@ -32,13 +38,17 @@ method group (AnsiMap){
     protected method csv:
     {|(filename)|
         data = CSV fromFile: filename splitOn: ',';
-        data do: 
-        {|(line)|
+        2 to: data size do: 
+        {|(i)|
+            |line| = data[i];
             |c| = line[3] asInteger;
             (c asInteger == 0) 
                 ifTrue: {c = ' ' asInteger}
                 ifFalse: {c = receiver parseHex(AnsiMap::charMap[c+1][2])};
             line[3] = c asCharacter;
+           
+            line[4] = (AnsiMap::colourMap getObjectsForKey: line[4])[1];
+            line[5] = (AnsiMap::colourMap getObjectsForKey: line[5])[1];
         };
         receiver::width = data[data size][1] asInteger + 1;
         receiver::height = data[data size][2] asInteger + 1;
@@ -47,22 +57,19 @@ method group (AnsiMap){
     public method character
     {|(x, y)|
         |i| = idx(x, y);
-        (data[i] size == 1) ifTrue: {Host out printLine("HERE: " + data[i+1][1] + " " + i)};
         data[i][3];
     }
 
     public method backgroundColour
     {|(x, y)|
         |i| = idx(x, y);
-        data[i][4];
-        40;
+        data[i][5];
     }
 
     public method foregroundColour
     {|(x, y)|
         |i| = idx(x, y);
-        data[i][5];
-        37;
+        data[i][4];
     }
 
     private method idx

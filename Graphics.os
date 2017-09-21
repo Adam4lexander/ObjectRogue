@@ -83,7 +83,10 @@ method group (FrameBuffer){
         Console goto(0, 0);
         1 to: (width*height) do:
         {|(i)|
-            Console graphics(backColours[i], frontColours[i]);
+            |bc| = backColours[i];
+            |fc| = frontColours[i];
+            (fc < 10) ifTrue: { Console graphics(bc + 40, fc + 30) }
+            ifFalse: { Console graphics(1, bc + 40, fc - 10 + 90) };
             Host out print(chars[i]);
             (i % width == 0) ifTrue: {Host out print("\n")};
         };
